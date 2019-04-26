@@ -235,6 +235,8 @@ class BST:
         # количество узлов в дереве
         q_ty=0
         allElements=self.GetAllNodes()
+        if self.Root in allElements:
+                q_ty+=1
         for element in allElements:
             if not element.isLeaf():
                 q_ty+=1
@@ -243,12 +245,14 @@ class BST:
          
 
 
-"""
 
 A=BSTNode(9,"значение 1",None)
 print(A.hasRightChild(),A.hasLeftChild())
+
 BT=BST(A)
+
 BT.AddKeyValue(3,"значение 2")
+"""
 BT.AddKeyValue(1,"значение 3")
 BT.AddKeyValue(4,"значение 4")
 BT.AddKeyValue(40,"значение 5")
@@ -276,7 +280,9 @@ print("*********")
 print(BT.FinMinMax(A).NodeKey)
 print(BT.FinMinMax(A,False).NodeKey)
 print(BT.GetAllNodes())
+"""
 print(BT.Count())
+"""
 print(BT.printAll())
 BT.DeleteNodeByKey(40)
 print("*********")
