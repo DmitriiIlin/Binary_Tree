@@ -189,8 +189,10 @@ class BST:
                 return output
             elif nodeRightChildren==None and nodeLeftChildren!=None:
                 return False
-            else: 
-                return False
+            elif nodeRightChildren==None and nodeLeftChildren==None:
+                target=None
+                output.append(target)
+                return output
         else:
             return False
 
@@ -204,25 +206,43 @@ class BST:
             deletedLeftChildren=data[1]
             deletedRightChildren=data[2]
             target=data[3]
-            target_parent=target.Parent
-            if self.CompareTwo(target_parent, target)==True:
-                target_parent.LeftChild=None
-            else:
-                target_parent.RightChild=None
-            if self.CompareTwo(parent,target)==True:
-                parent.LeftChild=target
-            else:
-                parent.RightChild=target
-            if deletedLeftChildren!=None:
-                if deletedLeftChildren.NodeKey==target.NodeKey:
-                    target.LeftChild=None
-                else: 
-                    target.LeftChild=deletedLeftChildren
-            if deletedRightChildren!=None:
-                if deletedRightChildren.NodeKey==target.RightChild:
-                    target.RightChild=None
+            if target!=None:
+                target_parent=target.Parent
+            #Определяем каким ребенком была цель и назначаем в это поле None
+                if self.CompareTwo(target_parent, target)==True:
+                    target_parent.LeftChild=None
+                elif self.CompareTwo(target_parent, target)==False:
+                    target_parent.RightChild=None
                 else:
-                    target.RightChild=deletedRightChildren
+                    pass
+            #Проверка каким ребенком родителя удаляемого элемента будет цель
+                if self.CompareTwo(parent,target)==True:
+                    parent.LeftChild=target
+                elif self.CompareTwo(parent,target)==False:
+                    parent.RightChild=target
+                else:
+                    pass
+            #Назначение детей удаляемого элемента для подходящей цели
+                if deletedLeftChildren!=None:
+                    if deletedLeftChildren.NodeKey==target.NodeKey:
+                        target.LeftChild=None
+                    else: 
+                        target.LeftChild=deletedLeftChildren
+                if deletedRightChildren!=None:
+                    if deletedRightChildren.NodeKey==target.RightChild:
+                        target.RightChild=None
+                    else:
+                        target.RightChild=deletedRightChildren
+            # Действия у удаляемого эл-та нет детей            
+            elif deletedLeftChildren==None and deletedRightChildren==None:
+                deleted=self.FindNodeByKey(key).Node
+                if self.CompareTwo(parent,deleted)==True:
+                    parent.LeftChild=None
+                elif self.CompareTwo(parent,target)==False:
+                    parent.RightChild=None
+                else:
+                    pass 
+
 
         
     
@@ -238,27 +258,24 @@ class BST:
         if self.Root in allElements:
                 q_ty+=1
         for element in allElements:
-            if not element.isLeaf():
+            if not element.isLeaf() and element!=self.Root:
                 q_ty+=1
         return q_ty
 
          
 
-
+"""
 
 A=BSTNode(9,"значение 1",None)
-print(A.hasRightChild(),A.hasLeftChild())
-
 BT=BST(A)
-
 BT.AddKeyValue(3,"значение 2")
-"""
 BT.AddKeyValue(1,"значение 3")
 BT.AddKeyValue(4,"значение 4")
 BT.AddKeyValue(40,"значение 5")
 BT.AddKeyValue(47,"значение 6")
 BT.AddKeyValue(59,"значение 6")
 BT.AddKeyValue(42,"значение 6")
+
 print(BT.Root.NodeKey)
 print(BT.Root.NodeValue)
 print(BT.Root.Parent)
@@ -271,6 +288,7 @@ print(BT.Root.LeftChild.Parent)
 print(BT.Root.LeftChild.LeftChild)
 print(BT.Root.LeftChild.RightChild)
 print("*********")
+
 Z=BT.FindNodeByKey(9)
 print(Z,Z.NodeHasKey)
 print("*********")
@@ -280,13 +298,11 @@ print("*********")
 print(BT.FinMinMax(A).NodeKey)
 print(BT.FinMinMax(A,False).NodeKey)
 print(BT.GetAllNodes())
-"""
-print(BT.Count())
-"""
+
+
 print(BT.printAll())
-BT.DeleteNodeByKey(40)
+BT.DeleteNodeByKey(1)
 print("*********")
-print(BT.GetAllNodes())
 print(BT.printAll())
 print(BT.Count())
 """
