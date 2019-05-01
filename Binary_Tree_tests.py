@@ -91,6 +91,15 @@ class Binary_Tree_Tests(unittest.TestCase):
         all_nodes_1=Tree.GetAllNodes()
         self.assertEqual(all_nodes_0,all_nodes_1)
 
+    def test_New_Node_Return_Value(self):
+        #Тест проверяет корректность метода AddKeyValue (возвращаемое булевое значение)
+        data=simple_tree_generator()
+        Tree=data[-1]
+        for i in range(0,len(data)-1):
+            self.assertEqual(Tree.AddKeyValue(data[i],"False"),False)
+        new_data=random.randint(10**5+1,10**6)
+        self.assertEqual(Tree.AddKeyValue(new_data,"True"),True)
+             
     def test_Max_Min(self):
         #Поиск минимального и максимального значений
         data=simple_tree_generator()
@@ -128,11 +137,10 @@ class Binary_Tree_Tests(unittest.TestCase):
         data=simple_tree_generator()
         Tree=data[-1]
         key_for_delete=data[1]
-        print(key_for_delete)
-        tree_KeyNode_print(Tree)
+        #tree_KeyNode_print(Tree)
         self.assertEqual(Tree.Root.LeftChild.NodeKey,key_for_delete)
         Tree.DeleteNodeByKey(key_for_delete)
-        tree_KeyNode_print(Tree)
+        #tree_KeyNode_print(Tree)
         self.assertEqual(Tree.Root.LeftChild,None)
 
 

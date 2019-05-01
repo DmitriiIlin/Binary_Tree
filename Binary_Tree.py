@@ -81,11 +81,19 @@ class BST:
 
     def AddKeyValue(self, key, val):
         # добавляем ключ-значение в дерево
+        if key==None:
+            return None
+        allNodes=self.GetAllNodes()
+        for node in allNodes:
+            if node.NodeKey==key:
+                return False 
         if self.Root:
-            self._AddKeyValue(key,val,self.Root) 
+            self._AddKeyValue(key,val,self.Root)
+            return True
         else:
             Node=BSTNode(key,val,None)
             self.Root=Node
+            return True
         
     def _AddKeyValue(self,key,val,currentNode):
         # приветный метод добавления Node
@@ -100,9 +108,10 @@ class BST:
             else:
                 currentNode.RightChild=BSTNode(key,val,currentNode)
         elif key==currentNode.NodeKey:
-            return False
-        else: 
-            return None 
+            pass
+        else:
+            pass
+
   
     def FinMinMax(self, FromNode, FindMax=True):
         # ищем максимальное/минимальное (узел) в поддерева
@@ -269,9 +278,13 @@ class BST:
 A=BSTNode(9,"значение 1",None)
 BT=BST(A)
 BT.AddKeyValue(3,"значение 2")
-BT.AddKeyValue(1,"значение 3")
-BT.AddKeyValue(4,"значение 4")
-BT.AddKeyValue(40,"значение 5")
+ZZ=BT.AddKeyValue(1,"значение 3")
+print(ZZ)
+ZZZ=BT.AddKeyValue(4,"значение 4")
+print(ZZZ)
+Q=BT.AddKeyValue(3,"значение 5")
+print(Q)
+
 BT.AddKeyValue(47,"значение 6")
 BT.AddKeyValue(59,"значение 6")
 BT.AddKeyValue(42,"значение 6")
@@ -299,8 +312,8 @@ print(BT.FinMinMax(A).NodeKey)
 print(BT.FinMinMax(A,False).NodeKey)
 print(BT.GetAllNodes())
 
-
 print(BT.printAll())
+
 BT.DeleteNodeByKey(1)
 print("*********")
 print(BT.printAll())
