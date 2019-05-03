@@ -170,90 +170,74 @@ class BST:
         else:
             return False
     
-    def TargetSearch(self,key):
-        #Поиск подходящего элемента для замены
-        output=[]
+    def DeleteNodeByKey(self,key):
         nodeexist=self.FindNodeByKey(key)
         if nodeexist.NodeHasKey!=True:
-            pass
+            return False
         elif nodeexist.NodeHasKey==True:
-            node=nodeexist.Node
-            parent=node.Parent
-            nodeLeftChildren=node.LeftChild
-            nodeRightChildren=node.RightChild
-            output.append(parent)
-            output.append(nodeLeftChildren)
-            output.append(nodeRightChildren)
-            if nodeRightChildren!=None:
-                if nodeRightChildren.LeftChild!=None:
-                    leftChild=nodeRightChildren.LeftChild
-                    while leftChild!=None:
-                        target=leftChild
-                        leftChild=leftChild.LeftChild
-                    if target.RightChild!=None:
-                        target=target.RightChild
-                elif nodeRightChildren.LeftChild==None:
-                    target=nodeRightChildren
-                output.append(target) 
-                return output
-            elif nodeRightChildren==None and nodeLeftChildren!=None:
-                return False
-            elif nodeRightChildren==None and nodeLeftChildren==None:
-                target=None
-                output.append(target)
-                return output
-        else:
-            return False
-
-    def DeleteNodeByKey(self, key):
-        # удаляем узел по ключу
-        data=self.TargetSearch(key)
-        if data==False: 
-            return False
-        else:
-            parent=data[0]
-            deletedLeftChildren=data[1]
-            deletedRightChildren=data[2]
-            target=data[3]
-            if target!=None:
-                target_parent=target.Parent
-            #Определяем каким ребенком была цель и назначаем в это поле None
-                if self.CompareTwo(target_parent, target)==True:
-                    target_parent.LeftChild=None
-                elif self.CompareTwo(target_parent, target)==False:
-                    target_parent.RightChild=None
+            node_for_delete=nodeexist.Node
+            parent_node_for_delete=node_for_delete.Parent
+            #Блок с двумя детьми
+            if node_for_delete.LeftChild!=None and node_for_delete.RightChild!=None:
+                children=node_for_delete.RightChild
+                if children.LeftChild==None:
+                    #Меняем потомка у родителя удаляемого элемента
+                    if node_for_delete.NodeKey>parent_node_for_delete.NodeKey:
+                        parent_node_for_delete.RightChild=children  
+                    elif node_for_delete.NodeKey<parent_node_for_delete.NodeKey:
+                        parent_node_for_delete.LeftChild=children
+                    children.LeftChild=node_for_delete.LeftChild
+                elif children.LeftChild!=None:
+                    #Ищем подходящий лист    
+                    while children.LeftChild!=None:
+                        children=children.LeftChild
+                    if children.RightChild!=None:
+                        children=children.RightChild
+                    children_parent=children.Parent
+                    #Удаляем из детей у старого родителя
+                    if children_parent.NodeKey>children.NodeKey:
+                        children_parent.LeftChild=None
+                    elif children_parent.NodeKey<children.NodeKey:
+                        children_parent.RightChild=None
+                    #Привязываем к новому родителю    
+                    if node_for_delete.NodeKey>parent_node_for_delete.NodeKey:
+                        parent_node_for_delete.RightChild=children  
+                    elif node_for_delete.NodeKey<parent_node_for_delete.NodeKey:
+                        parent_node_for_delete.LeftChild=children
+                    #Добавляем потомков
+                    children.LeftChild=node_for_delete.LeftChild
+                    children.RightChild=node_for_delete.RightChild            
+            # Блок если правый ребенок
+            elif node_for_delete.LeftChild==None and node_for_delete.RightChild!=None:
+                children=node_for_delete.RightChild
+                children.Parent=parent_node_for_delete
+                if node_for_delete.NodeKey>parent_node_for_delete.NodeKey:
+                    parent_node_for_delete.RightChild=children
+                elif node_for_delete.NodeKey<parent_node_for_delete.NodeKey:
+                    parent_node_for_delete.LeftChild=children
                 else:
                     pass
-            #Проверка каким ребенком родителя удаляемого элемента будет цель
-                if self.CompareTwo(parent,target)==True:
-                    parent.LeftChild=target
-                elif self.CompareTwo(parent,target)==False:
-                    parent.RightChild=target
+            # Блок если если левый ребенок
+            elif node_for_delete.LeftChild!=None and node_for_delete.RightChild==None:
+                children=node_for_delete.LeftChild
+                children.Parent=parent_node_for_delete
+                if node_for_delete.NodeKey>parent_node_for_delete.NodeKey:
+                    parent_node_for_delete.RightChild=children
+                elif node_for_delete.NodeKey<parent_node_for_delete.NodeKey:
+                    parent_node_for_delete.LeftChild=children
                 else:
                     pass
-            #Назначение детей удаляемого элемента для подходящей цели
-                if deletedLeftChildren!=None:
-                    if deletedLeftChildren.NodeKey==target.NodeKey:
-                        target.LeftChild=None
-                    else: 
-                        target.LeftChild=deletedLeftChildren
-                if deletedRightChildren!=None:
-                    if deletedRightChildren.NodeKey==target.RightChild:
-                        target.RightChild=None
-                    else:
-                        target.RightChild=deletedRightChildren
-            # Действия у удаляемого эл-та нет детей            
-            elif deletedLeftChildren==None and deletedRightChildren==None:
-                deleted=self.FindNodeByKey(key).Node
-                if self.CompareTwo(parent,deleted)==True:
-                    parent.LeftChild=None
-                elif self.CompareTwo(parent,target)==False:
-                    parent.RightChild=None
+            # Блок если нет детей
+            elif node_for_delete.LeftChild==None and node_for_delete.RightChild==None:
+                if node_for_delete.NodeKey>parent_node_for_delete.NodeKey:
+                    parent_node_for_delete.RightChild=None
+                elif node_for_delete.NodeKey<parent_node_for_delete.NodeKey:
+                    parent_node_for_delete.LeftChild=None
                 else:
-                    pass 
-
-
-        
+                    pass
+            return True
+        else:
+            return False
     
     def printAll(self):
         all=self.GetAllNodes()
@@ -274,8 +258,6 @@ class BST:
 """
 
 A=BSTNode(9,"значение 1",None)
-
-
 BT=BST(A)
 print(BT.Count())
 BT.AddKeyValue(3,"значение 2")
@@ -287,38 +269,20 @@ print(BT.Count())
 BT.AddKeyValue(3,"значение 5")
 print(BT.Count())
 BT.AddKeyValue(47,"значение 6")
-BT.AddKeyValue(59,"значение 6")
+BT.AddKeyValue(65,"значение 6")
 BT.AddKeyValue(42,"значение 6")
 print(BT.Count())
-BT.AddKeyValue(47,"значение 6")
+BT.AddKeyValue(63,"значение 6")
+BT.AddKeyValue(60,"значение 6")
+BT.AddKeyValue(61,"значение 6")
+BT.AddKeyValue(66,"значение 6")
 print(BT.Count())
-BT.DeleteNodeByKey(42)
+print("***********************")
+BT.DeleteNodeByKey(47)
 print(BT.Count())
-
-print(BT.Root.NodeKey)
-print(BT.Root.NodeValue)
-print(BT.Root.Parent)
-print(BT.Root.LeftChild)
-print(BT.Root.RightChild)
-print("*********")
-print(BT.Root.LeftChild.NodeKey)
-print(BT.Root.LeftChild.NodeValue)
-print(BT.Root.LeftChild.Parent)
-print(BT.Root.LeftChild.LeftChild)
-print(BT.Root.LeftChild.RightChild)
-print("*********")
-
-Z=BT.FindNodeByKey(9)
-print(Z,Z.NodeHasKey)
-print("*********")
-ZZ=BT.FindNodeByKey(6)
-print(ZZ,ZZ.NodeHasKey,ZZ.ToLeft)
-print("*********")
-print(BT.FinMinMax(A).NodeKey)
-print(BT.FinMinMax(A,False).NodeKey)
+BT.printAll()
+print("***********************")
 print(BT.GetAllNodes())
-
-print(BT.printAll())
 
 BT.DeleteNodeByKey(1)
 print("*********")
