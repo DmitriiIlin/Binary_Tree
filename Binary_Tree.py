@@ -257,7 +257,7 @@ class BST:
 
          
 
-
+"""
 
 A=BSTNode(8,"значение 1",None)
 BT=BST(A)
@@ -288,3 +288,4 @@ BT.printAll()
 M=BT.FindNodeByKey(47)
 #print(BT.FindNodeByKey(47))
 print()
+"""
