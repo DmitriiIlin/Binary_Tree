@@ -199,6 +199,8 @@ class BST:
                         children_parent.LeftChild=None
                     elif children_parent.NodeKey<children.NodeKey:
                         children_parent.RightChild=None
+                    #Обновляем родителя в элементе замене удаляемому
+                    children.Parent=parent_node_for_delete
                     #Привязываем к новому родителю    
                     if node_for_delete.NodeKey>parent_node_for_delete.NodeKey:
                         parent_node_for_delete.RightChild=children  
@@ -255,7 +257,7 @@ class BST:
 
          
 
-"""
+
 
 A=BSTNode(8,"значение 1",None)
 BT=BST(A)
@@ -283,7 +285,6 @@ print("***********************")
 #print(BT.GetAllNodes())
 print("***********************")
 BT.printAll()
-#M=BT.FindNodeByKey(47)
+M=BT.FindNodeByKey(47)
 #print(BT.FindNodeByKey(47))
 print()
-"""
