@@ -52,7 +52,7 @@ class BST:
     def _FindNodeByKey(self,key,currentNode):
         # приватный метод поиска
         if not currentNode:
-            return None 
+            return None
         elif currentNode.NodeKey==key:
             nodeRes=BSTFind()
             nodeRes.Node=currentNode
@@ -257,35 +257,33 @@ class BST:
 
 """
 
-A=BSTNode(9,"значение 1",None)
+A=BSTNode(8,"значение 1",None)
 BT=BST(A)
 print(BT.Count())
-BT.AddKeyValue(3,"значение 2")
-print(BT.Count())
-BT.AddKeyValue(1,"значение 3")
-print(BT.Count())
-BT.AddKeyValue(12,"значение 4")
-print(BT.Count())
-BT.AddKeyValue(3,"значение 5")
-print(BT.Count())
-BT.AddKeyValue(47,"значение 6")
-BT.AddKeyValue(65,"значение 6")
-BT.AddKeyValue(42,"значение 6")
-print(BT.Count())
-BT.AddKeyValue(63,"значение 6")
-BT.AddKeyValue(60,"значение 6")
-BT.AddKeyValue(61,"значение 6")
-BT.AddKeyValue(66,"значение 6")
-print(BT.Count())
+BT.AddKeyValue(4,"значение 2")
+BT.AddKeyValue(12,"значение 3")
+BT.AddKeyValue(2,"значение 4")
+BT.AddKeyValue(6,"значение 5")
+BT.AddKeyValue(10,"значение 6")
+BT.AddKeyValue(14,"значение 6")
+BT.AddKeyValue(1,"значение 6")
+BT.AddKeyValue(3,"значение 6")
+BT.AddKeyValue(5,"значение 6")
+BT.AddKeyValue(7,"значение 6")
+BT.AddKeyValue(9,"значение 6")
+BT.AddKeyValue(11,"значение 6")
+BT.AddKeyValue(13,"значение 6")
+BT.AddKeyValue(15,"значение 6")
 print("***********************")
-BT.DeleteNodeByKey(47)
-print(BT.Count())
 BT.printAll()
+print(BT.FindNodeByKey(47))
+BT.DeleteNodeByKey(12)
+#print(BT.Count())
 print("***********************")
-print(BT.GetAllNodes())
-
-BT.DeleteNodeByKey(1)
-print("*********")
-print(BT.printAll())
-print(BT.Count())
+#print(BT.GetAllNodes())
+print("***********************")
+BT.printAll()
+#M=BT.FindNodeByKey(47)
+#print(BT.FindNodeByKey(47))
+print()
 """
